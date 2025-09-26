@@ -1,4 +1,6 @@
-# Hi, I'm Eva Tate 👋  
+theme: jekyll-theme-cayman
+
+# Hi, I'm Eva Tate  
 Rising Junior @ Dartmouth | Computer Science Major 
 
 ## Projects
