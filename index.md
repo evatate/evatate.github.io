@@ -1,4 +1,4 @@
-<img src="images/profile" alt="Eva Tate" width="200" style="border-radius: 50%;">
+<img src="images/profile.png" alt="Eva Tate" width="200" style="border-radius: 50%;">
 
 # Hi, I'm Eva Tate  
 Rising Junior @ Dartmouth | Computer Science Major 
