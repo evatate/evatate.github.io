@@ -1,5 +1,10 @@
+<img src="images/profile" alt="Eva Tate" width="200" style="border-radius: 50%;">
+
 # Hi, I'm Eva Tate  
 Rising Junior @ Dartmouth | Computer Science Major 
+
+## About Me
+I'm from California and am a rising junior at Dartmouth College majoring in Computer Science with a focus on data science and algorithms. In my free time, I enjoy running half marathons and completed my first marathon last year. I also love backpacking and am currently studying abroad at AIT-Budapest!
 
 ## Projects
 - [POS Tagger (HMM)](https://github.com/evatate/POS-Tagger) — Sequence modeling using Hidden Markov Models.  
