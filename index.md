@@ -6,6 +6,7 @@ Rising Junior @ Dartmouth | Computer Science Major
 - [Linear Regression Housing Analysis](https://github.com/evatate/Ames-Housing-Data-Analysis) — Predictive modeling & residual analysis.  
 - [Pathfinder (BFS)](https://github.com/evatate/Pathfinder) — Shortest path finder with visualization.  
 - [Collision Detection via Quadtrees](https://github.com/evatate/Collision-Detection-via-Quadtrees) — Optimized spatial data structures.  
+- [Tiny Search Engine](https://github.com/evatate/Tiny-Search-Engine) - Crawls through websites, builds index, and returns websites based on queries.
 
 ## Skills
 Python | Java | C | Pandas | NumPy | scikit-learn | Algorithms | Data Structures  
