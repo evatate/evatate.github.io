@@ -141,6 +141,7 @@ export default function App() {
       fullDesc: "Flutter mobile application hosted on AWS that detects early signs of Alzheimer's disease for 100+ study participants. Designed and deployed multimodal ML models in PyTorch analyzing gait patterns, verbal fluency, eye-tracking data, and facial expressions. Built comprehensive data pipelines using Apple HealthKit and Android Health Connect, achieving 83% model accuracy.",
       tech: ["Python", "PyTorch", "Flutter", "AWS", "NLP"],
       github: "https://github.com/evatate/RealVision",
+      appStore: "http://apps.apple.com/us/app/realvision-research/id6757725921",
       image: "/Images/realvision.jpg.webp"
     },
     {
@@ -356,8 +357,8 @@ export default function App() {
                 <p className="text-xs font-light text-gray-400 tracking-widest uppercase mb-3">About Me</p>
                 <h3 className="text-lg md:text-xl font-semibold text-white">Dartmouth College <span className="text-gray-500">|</span> Computer Science</h3>
               </div>
-              <p className="text-sm text-gray-300 leading-relaxed font-light tracking-wide\">
-                Hi! I'm Eva, a junior at Dartmouth College. I'm passionate about applying machine learning and data science to real-world problems, from building predictive models to deploying multimodal ML systems. My projects range from early Alzheimer's detection to predicting customer behavior to brain-to-text decoding for ALS patients. Outside of coding, you can find me running with the Dartmouth Running Team, climbing with the Mountaineering Club, or making clothes and teddy bears in the Makerspace.
+              <p className="text-sm text-gray-300 leading-relaxed font-light tracking-wide">
+                Hi! I'm Eva, a junior at Dartmouth College. I'm passionate about applying machine learning and data science to real-world problems, from building predictive models to deploying multimodal ML systems. My projects range from early Alzheimer's detection to predicting customer behavior to brain-to-text decoding for ALS patients. Outside of coding, you can find me running with the Dartmouth Running Team, backpacking with the Dartmouth Outing Club, or making rings in the Jewelry Studio.
               </p>
             </div>
           </div>
@@ -365,12 +366,11 @@ export default function App() {
       </section>
 
       {/* Experience Timeline */}
-      <section id="experience" className="py-24 px-6 md:px-12 lg:px-24" data-section="experience">
+      {/* <section id="experience" className="py-24 px-6 md:px-12 lg:px-24" data-section="experience">
         <div className="max-w-4xl mx-auto">
           <div className={`transition-all duration-1000 ${visibleSections.has('experience') ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
             <h2 className="text-5xl md:text-6xl font-bold mb-16">Experience</h2>
             <div className="relative">
-              {/* Animated Progress Line */}
               <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-white/10"></div>
               <div 
                 className="absolute left-0 top-0 w-0.5 bg-white transition-all duration-300"
@@ -387,7 +387,6 @@ export default function App() {
                          transform: visibleSections.has('experience') ? 'translateX(0)' : 'translateX(-40px)',
                          transition: 'all 0.8s ease-out'
                        }}>
-                    {/* Animated Dot */}
                     <div 
                       className="absolute left-0 top-2 w-3 h-3 bg-white rounded-full transform -translate-x-[5px] group-hover:scale-150 transition-transform duration-300"
                       style={{
@@ -406,7 +405,7 @@ export default function App() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Projects Section */}
       <section id="projects" className="py-24 px-6 md:px-12 lg:px-24" data-section="projects">
@@ -487,6 +486,19 @@ export default function App() {
                   View on GitHub
                   <ExternalLink size={16} />
                 </a>
+                {selectedProject.appStore && (
+                  <a
+                    href={selectedProject.appStore}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-full font-semibold hover:bg-blue-600 transition-all">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.71,19.5c-.83,1.24-1.71,2.45-3.05,2.47-1.34,.03-1.77-.79-3.29-.79-1.53,0-2,.76-3.27,.82-1.31,.05-2.3-1.32-3.14-2.53C4.25,17.79,2.94,14.6,3.79,12.19c.43-1.19,1.4-1.95,2.44-1.97,1.21-.02,2.35,.81,3.09,.81,.74,0,2.13-1.01,3.6-.86,.61,.03,2.33,.25,3.44,1.86-.09,.06-2.05,1.19-2.04,3.55,.02,2.82,2.46,3.77,2.48,3.78-.02,.07-.39,1.3-.89,2.09h0Zm-5.52-13.91c.73-.87,1.22-2.07,1.08-3.28-1.05,.04-2.32,.7-3.08,1.57-.68,.78-1.27,2.04-1.11,3.23,1.17,.09,2.37-.6,3.11-1.52Z"/>
+                    </svg>
+                    App Store
+                    <ExternalLink size={16} />
+                  </a>
+                )}
                 <button
                   onClick={() => setSelectedProject(null)}
                   className="px-6 py-3 border border-white/20 rounded-full font-semibold hover:bg-white/5 transition-all">
@@ -568,7 +580,7 @@ export default function App() {
         <p>Built with React</p>
       </footer>
 
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translate(0, 0); }
           25% { transform: translate(10px, -10px); }
