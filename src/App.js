@@ -138,7 +138,7 @@ export default function App() {
     {
       title: "RealVision",
       shortDesc: "Alzheimer's detection app",
-      fullDesc: "Flutter mobile application hosted on AWS that detects early signs of Alzheimer's disease for 100+ study participants. Designed and deployed multimodal ML models in PyTorch analyzing gait patterns, verbal fluency, eye-tracking data, and facial expressions. Built comprehensive data pipelines using Apple HealthKit and Android Health Connect, achieving 83% model accuracy.",
+      fullDesc: "Flutter mobile application hosted on AWS that detects signs of Alzheimer's disease for 200+ study participants. Designed and deployed multimodal ML models in PyTorch analyzing gait patterns, verbal fluency, eye-tracking data, and facial expressions. Built a speech ML pipeline using Whisper ASR and OpenSmile features acheiving 84% accuracy.",
       tech: ["Python", "PyTorch", "Flutter", "AWS", "NLP"],
       github: "https://github.com/evatate/RealVision",
       appStore: "http://apps.apple.com/us/app/realvision-research/id6757725921",
@@ -202,9 +202,9 @@ export default function App() {
   ];
 
   const skills = {
-    "Languages": ["Python", "Java", "C/C++", "Kotlin", "SQL", "R", "Bash"],
+    "Languages": ["Python", "Java", "C/C++", "Kotlin", "SQL", "R", "Bash", "Dart"],
     "ML/AI": ["PyTorch", "TensorFlow", "Scikit-learn", "HuggingFace", "NLP"],
-    "Tools": ["AWS", "Git", "Flutter", "Pandas", "NumPy", "Jupyter"],
+    "Tools": ["AWS", "Git", "Docker", "Jupyter"],
     "Mobile": ["Android", "iOS", "React Native", "Flutter"]
   };
 
@@ -218,7 +218,7 @@ export default function App() {
         <div className="text-xl font-bold">Eva Tate</div>
         <div className="flex gap-6 text-sm">
           <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">About</button>
-          <button onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Experience</button>
+          {/* <button onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Experience</button> */}
           <button onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Projects</button>
           <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Contact</button>
         </div>
