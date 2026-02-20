@@ -136,6 +136,14 @@ export default function App() {
   
   const projects = [
     {
+      title: "ECG Digitization",
+      shortDesc: "Deep learning pipeline for ECG digitization",
+      fullDesc: "Developed an end-to-end deep learning pipeline for the PhysioNet 2025 ECG Image Digitization challenge, reconstructing calibrated 12-lead ECG time-series signals from scanned and photographed paper records. The system combines a ResNet-34 U-Net (PyTorch) for trace segmentation with sub-pixel signal extraction, FFT-based physical calibration, morphology-preserving filtering, and physiologically constrained post-processing (Einthoven’s law enforcement). The approach integrates computer vision and signal processing to convert legacy ECG images into clinically usable digital data.",
+      tech: ["Python", "PyTorch", "Computer Vision", "Signal Processing"],
+      github: "https://github.com/evatate/ECG-Digitization",
+      image: "/Images/ECG_Digitization.jpg"
+    },
+    {
       title: "RealVision",
       shortDesc: "Alzheimer's detection app",
       fullDesc: "Flutter mobile application hosted on AWS that detects early signs of Alzheimer's disease for 100+ study participants. Designed and deployed multimodal ML models in PyTorch analyzing gait patterns, verbal fluency, eye-tracking data, and facial expressions. Built comprehensive data pipelines using Apple HealthKit and Android Health Connect, achieving 83% model accuracy.",
