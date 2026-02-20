@@ -108,15 +108,15 @@ export default function App() {
     };
   }, [isDragging]);
 
-  const handleCubeMouseDown = (e) => {
+  const handleDragStart = (clientX, clientY) => {
     setIsDragging(true);
-    setDragStart({ x: e.clientX, y: e.clientY });
+    setDragStart({ x: clientX, y: clientY });
   };
 
-  const handleCubeMouseMove = (e) => {
+  const handleDragMove = (clientX, clientY) => {
     if (isDragging) {
-      const deltaX = e.clientX - dragStart.x;
-      const deltaY = e.clientY - dragStart.y;
+      const deltaX = clientX - dragStart.x;
+      const deltaY = clientY - dragStart.y;
       setCubeRotation(prev => ({
         x: prev.x - deltaY * 0.5,
         y: prev.y - deltaX * 0.5
@@ -125,14 +125,31 @@ export default function App() {
         x: -deltaY * 0.3,
         y: -deltaX * 0.3
       };
-      setDragStart({ x: e.clientX, y: e.clientY });
+      setDragStart({ x: clientX, y: clientY });
     }
   };
 
-  const handleCubeMouseUp = () => {
+  const handleDragEnd = () => {
     setIsDragging(false);
   };
 
+  // Mouse handlers
+  const handleCubeMouseDown = (e) => handleDragStart(e.clientX, e.clientY);
+  const handleCubeMouseMove = (e) => handleDragMove(e.clientX, e.clientY);
+  const handleCubeMouseUp = () => handleDragEnd();
+
+  // Touch handlers
+  const handleCubeTouchStart = (e) => {
+    if (e.touches.length === 1) {
+      handleDragStart(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  };
+  const handleCubeTouchMove = (e) => {
+    if (e.touches.length === 1) {
+      handleDragMove(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  };
+  const handleCubeTouchEnd = () => handleDragEnd();
   
   const projects = [
     {
@@ -146,9 +163,10 @@ export default function App() {
     {
       title: "RealVision",
       shortDesc: "Alzheimer's detection app",
-      fullDesc: "Flutter mobile application hosted on AWS that detects early signs of Alzheimer's disease for 100+ study participants. Designed and deployed multimodal ML models in PyTorch analyzing gait patterns, verbal fluency, eye-tracking data, and facial expressions. Built comprehensive data pipelines using Apple HealthKit and Android Health Connect, achieving 83% model accuracy.",
+      fullDesc: "RealVision: Multimodal Machine Learning for ADRD Screening is a fully deployed cross-platform (iOS and Android) mobile application that applies digital phenotyping to screen for early indicators of Alzheimer’s Disease and Related Dementias. The system captures behavioral and neurological signals, including speech patterns, eye movements, facial expressiveness, and gait biomechanics, which have been independently validated in prior clinical trials and machine learning research. Using an interpretable, feature-based multimodal architecture, RealVision transforms these real-world behavioral markers into modality-specific risk scores and cognitive estimates. Built with Flutter and deployed on HIPAA-aligned AWS infrastructure, the platform enables scalable, low-burden cognitive screening outside traditional clinical environments and was used in formal clinical validation studies.",
       tech: ["Python", "PyTorch", "Flutter", "AWS", "NLP"],
       github: "https://github.com/evatate/RealVision",
+      appStore: "http://apps.apple.com/us/app/realvision-research/id6757725921",
       image: "/Images/realvision.jpg.webp"
     },
     {
@@ -218,14 +236,16 @@ export default function App() {
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden"
          onMouseMove={handleCubeMouseMove}
-         onMouseUp={handleCubeMouseUp}>
+         onMouseUp={handleCubeMouseUp}
+         onTouchMove={handleCubeTouchMove}
+         onTouchEnd={handleCubeTouchEnd}>
       
       {/* Top Bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex justify-between items-center bg-black/50 backdrop-blur-md border-b border-white/10">
-        <div className="text-xl font-bold">Eva Tate</div>
-        <div className="flex gap-6 text-sm">
+      <div className="fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-4 flex justify-between items-center bg-black/50 backdrop-blur-md border-b border-white/10">
+        <div className="text-lg md:text-xl font-bold">Eva Tate</div>
+        <div className="flex gap-3 md:gap-6 text-xs md:text-sm">
           <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">About</button>
-          <button onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Experience</button>
+          {/* <button onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Experience</button> */}
           <button onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Projects</button>
           <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Contact</button>
         </div>
@@ -250,15 +270,15 @@ export default function App() {
           ))}
         </div>
 
-        <div className="max-w-7xl w-full mx-auto flex items-center justify-center gap-16">
+        <div className="max-w-7xl w-full mx-auto flex flex-col md:flex-row items-center justify-center gap-12 md:gap-16">
           {/* Left side - Text */}
-          <div className="text-left animate-fade-in">
+          <div className="text-center md:text-left animate-fade-in order-2 md:order-1">
             <p className="text-sm font-light text-gray-300 tracking-widest">A COLLECTION OF</p>
             <p className="text-3xl font-bold text-white mt-2">Projects</p>
           </div>
 
           {/* Center - Cube */}
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center order-1 md:order-2">
             <div className="mb-6 text-center animate-fade-in">
               <p className="text-gray-400 text-sm tracking-widest mb-2">DRAG TO ROTATE</p>
             </div>
@@ -266,6 +286,7 @@ export default function App() {
             {/* Interactive 3D Cube */}
             <div className="perspective-1000 cursor-grab active:cursor-grabbing select-none"
                  onMouseDown={handleCubeMouseDown}
+                 onTouchStart={handleCubeTouchStart}
                  style={{ touchAction: 'none' }}>
               <div 
                 className="w-64 h-64 relative preserve-3d will-change-transform"
@@ -317,7 +338,7 @@ export default function App() {
           </div>
 
           {/* Right side text */}
-          <div className="text-right animate-fade-in-delay">
+          <div className="text-center md:text-right animate-fade-in-delay order-3">
             <p className="text-sm font-light text-white tracking-widest">Eva Tate<br/>Dartmouth College '27</p>
           </div>
         </div>
@@ -365,7 +386,7 @@ export default function App() {
                 <h3 className="text-lg md:text-xl font-semibold text-white">Dartmouth College <span className="text-gray-500">|</span> Computer Science</h3>
               </div>
               <p className="text-sm text-gray-300 leading-relaxed font-light tracking-wide\">
-                Hi! I'm Eva, a junior at Dartmouth College. I'm passionate about applying machine learning and data science to real-world problems, from building predictive models to deploying multimodal ML systems. My projects range from early Alzheimer's detection to predicting customer behavior to brain-to-text decoding for ALS patients. Outside of coding, you can find me running with the Dartmouth Running Team, climbing with the Mountaineering Club, or making clothes and teddy bears in the Makerspace.
+                Hi! I'm Eva, a junior at Dartmouth College. I'm passionate about applying machine learning and data science to real-world problems, from building predictive models to deploying multimodal ML systems. My projects range from early Alzheimer's detection to predicting customer behavior to brain-to-text decoding for ALS patients. Outside of coding, you can find me running with the Dartmouth Running Team, backpacking with the Outing Club, or making rings in the Jewelry Studio.
               </p>
             </div>
           </div>
@@ -373,12 +394,12 @@ export default function App() {
       </section>
 
       {/* Experience Timeline */}
+      {/*
       <section id="experience" className="py-24 px-6 md:px-12 lg:px-24" data-section="experience">
         <div className="max-w-4xl mx-auto">
           <div className={`transition-all duration-1000 ${visibleSections.has('experience') ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
-            <h2 className="text-5xl md:text-6xl font-bold mb-16">Experience</h2>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-16">Experience</h2>
             <div className="relative">
-              {/* Animated Progress Line */}
               <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-white/10"></div>
               <div 
                 className="absolute left-0 top-0 w-0.5 bg-white transition-all duration-300"
@@ -395,7 +416,6 @@ export default function App() {
                          transform: visibleSections.has('experience') ? 'translateX(0)' : 'translateX(-40px)',
                          transition: 'all 0.8s ease-out'
                        }}>
-                    {/* Animated Dot */}
                     <div 
                       className="absolute left-0 top-2 w-3 h-3 bg-white rounded-full transform -translate-x-[5px] group-hover:scale-150 transition-transform duration-300"
                       style={{
@@ -415,12 +435,13 @@ export default function App() {
           </div>
         </div>
       </section>
+      */}
 
       {/* Projects Section */}
       <section id="projects" className="py-24 px-6 md:px-12 lg:px-24" data-section="projects">
         <div className="max-w-7xl mx-auto">
           <div className={`transition-all duration-1000 ${visibleSections.has('projects') ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
-            <h2 className="text-5xl md:text-6xl font-bold mb-16">Projects</h2>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-16">Projects</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {projects.map((project, idx) => (
                 <div
@@ -463,11 +484,11 @@ export default function App() {
 
       {/* Project Modal */}
       {selectedProject && (
-        <div className="fixed inset-0 bg-black/95 backdrop-blur-xl z-50 flex items-center justify-center p-6 animate-fade-in"
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-xl z-50 flex items-center justify-center p-4 md:p-6 animate-fade-in"
              onClick={() => setSelectedProject(null)}>
           <div className="bg-black border border-white/20 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
                onClick={(e) => e.stopPropagation()}>
-            <div className="relative h-64 md:h-80 overflow-hidden rounded-t-2xl">
+            <div className="relative h-48 md:h-80 overflow-hidden rounded-t-2xl">
               <img 
                 src={selectedProject.image} 
                 alt={selectedProject.title}
@@ -475,8 +496,8 @@ export default function App() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
             </div>
-            <div className="p-8">
-              <h2 className="text-4xl font-bold mb-4">{selectedProject.title}</h2>
+            <div className="p-6 md:p-8">
+              <h2 className="text-2xl md:text-4xl font-bold mb-4">{selectedProject.title}</h2>
               <p className="text-lg text-gray-300 mb-6 leading-relaxed">{selectedProject.fullDesc}</p>
               <div className="flex flex-wrap gap-2 mb-6">
                 {selectedProject.tech.map((tech, i) => (
@@ -485,7 +506,7 @@ export default function App() {
                   </span>
                 ))}
               </div>
-              <div className="flex gap-4">
+              <div className="flex flex-wrap gap-4">
                 <a
                   href={selectedProject.github}
                   target="_blank"
@@ -495,6 +516,19 @@ export default function App() {
                   View on GitHub
                   <ExternalLink size={16} />
                 </a>
+                {selectedProject.appStore && (
+                  <a
+                    href={selectedProject.appStore}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-full font-semibold hover:bg-blue-600 transition-all">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.71,19.5c-.83,1.24-1.71,2.45-3.05,2.47-1.34,.03-1.77-.79-3.29-.79-1.53,0-2,.76-3.27,.82-1.31,.05-2.3-1.32-3.14-2.53C4.25,17.79,2.94,14.6,3.79,12.19c.43-1.19,1.4-1.95,2.44-1.97,1.21-.02,2.35,.81,3.09,.81,.74,0,2.13-1.01,3.6-.86,.61,.03,2.33,.25,3.44,1.86-.09,.06-2.05,1.19-2.04,3.55,.02,2.82,2.46,3.77,2.48,3.78-.02,.07-.39,1.3-.89,2.09h0Zm-5.52-13.91c.73-.87,1.22-2.07,1.08-3.28-1.05,.04-2.32,.7-3.08,1.57-.68,.78-1.27,2.04-1.11,3.23,1.17,.09,2.37-.6,3.11-1.52Z"/>
+                    </svg>
+                    App Store
+                    <ExternalLink size={16} />
+                  </a>
+                )}
                 <button
                   onClick={() => setSelectedProject(null)}
                   className="px-6 py-3 border border-white/20 rounded-full font-semibold hover:bg-white/5 transition-all">
@@ -510,7 +544,7 @@ export default function App() {
       <section className="py-24 px-6 md:px-12 lg:px-24" data-section="skills">
         <div className="max-w-6xl mx-auto">
           <div className={`transition-all duration-1000 ${visibleSections.has('skills') ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
-            <h2 className="text-5xl md:text-6xl font-bold mb-12">Skills</h2>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-12">Skills</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {Object.entries(skills).map(([category, items], idx) => (
                 <div key={idx} 
@@ -540,7 +574,7 @@ export default function App() {
       <section id="contact" className="py-24 px-6 md:px-12 lg:px-24" data-section="contact">
         <div className="max-w-4xl mx-auto text-center">
           <div className={`transition-all duration-1000 ${visibleSections.has('contact') ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
-            <h2 className="text-5xl md:text-6xl font-bold mb-8">Get In Touch</h2>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-8">Get In Touch</h2>
             <p className="text-sm text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed tracking-wide font-light">
               I'd love to connect. Feel free to reach out by email, or find me on <span className="text-white">LinkedIn</span> and <span className="text-white">GitHub</span>.
             </p>
