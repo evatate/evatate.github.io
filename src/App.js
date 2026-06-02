@@ -153,6 +153,15 @@ export default function App() {
   
   const projects = [
     {
+      title: "Dartbid",
+      shortDesc: "Full-stack course enrollment marketplace",
+      fullDesc: "Built a full-stack course enrollment marketplace with a React frontend, Flask REST API, and MySQL database hosted on Railway and deployed on Render. The core of the project is a 13-step atomic database transaction that transfers enrollment, settles both parties' account balances, invalidates competing bids, and appends an immutable price history record or rolls everything back on failure. Implemented JWT auth, bcrypt password hashing, parameterized queries, and buyer/seller anonymity enforced at the query layer.",
+      tech: ["Python", "SQL", "Flask", "React", "REST API", "MySQL"],
+      github: "https://github.com/evatate/DartBid",
+      site: "https://dartbid-frontend.onrender.com",
+      image: "/Images/dartbid.png"
+    },
+    {
       title: "ECG Digitization",
       shortDesc: "Deep learning pipeline for ECG digitization",
       fullDesc: "Developed an end-to-end deep learning pipeline for the PhysioNet 2025 ECG Image Digitization challenge, reconstructing calibrated 12-lead ECG time-series signals from scanned and photographed paper records. The system combines a ResNet-34 U-Net (PyTorch) for trace segmentation with sub-pixel signal extraction, FFT-based physical calibration, morphology-preserving filtering, and physiologically constrained post-processing (Einthoven’s law enforcement). The approach integrates computer vision and signal processing to convert legacy ECG images into clinically usable digital data.",
@@ -526,6 +535,16 @@ export default function App() {
                       <path d="M18.71,19.5c-.83,1.24-1.71,2.45-3.05,2.47-1.34,.03-1.77-.79-3.29-.79-1.53,0-2,.76-3.27,.82-1.31,.05-2.3-1.32-3.14-2.53C4.25,17.79,2.94,14.6,3.79,12.19c.43-1.19,1.4-1.95,2.44-1.97,1.21-.02,2.35,.81,3.09,.81,.74,0,2.13-1.01,3.6-.86,.61,.03,2.33,.25,3.44,1.86-.09,.06-2.05,1.19-2.04,3.55,.02,2.82,2.46,3.77,2.48,3.78-.02,.07-.39,1.3-.89,2.09h0Zm-5.52-13.91c.73-.87,1.22-2.07,1.08-3.28-1.05,.04-2.32,.7-3.08,1.57-.68,.78-1.27,2.04-1.11,3.23,1.17,.09,2.37-.6,3.11-1.52Z"/>
                     </svg>
                     App Store
+                    <ExternalLink size={16} />
+                  </a>
+                )}
+                {selectedProject.site && (
+                  <a
+                    href={selectedProject.site}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-6 py-3 bg-white/10 border border-white/20 rounded-full font-semibold hover:bg-white/20 transition-all">
+                    Visit Site
                     <ExternalLink size={16} />
                   </a>
                 )}
