@@ -153,6 +153,14 @@ export default function App() {
   
   const projects = [
     {
+      title: "ClawTrap",
+      shortDesc: "AI agent honeypot for threat intelligence",
+      fullDesc: "Built an AI agent honeypot during an internship at Palo Alto Networks: a decoy assistant with a fabricated persona and fake internal tools served over MCP to a locally-hosted LLM (Ollama/Qwen3), designed to attract and contain attacker behavior against AI agents. Implemented a default-deny network kill switch enforced with iptables that hard-cuts the VM and automatically suspends and clones it for forensics on any disallowed egress attempt, a live AWS canary credential for independent exfiltration alerts, and a scripted attacker simulator driving five real attack playbooks (reconnaissance, business email compromise, indirect prompt injection, sandbox escape, unauthorized deployment). Captured sessions are scored with a rule-based risk engine tagged against MITRE ATLAS techniques, converted into STIX 2.1 objects, and served over a TAXII 2.1 server consumed by Cortex XSOAR's Threat Intel Management module as a live feed.",
+      tech: ["Python", "OpenClaw", "Ollama", "MCP", "iptables", "STIX/TAXII", "JavaScript"],
+      github: "https://github.com/evatate/ClawTrap",
+      image: "/Images/clawtrap.png"
+    },
+    {
       title: "Dartbid",
       shortDesc: "Full-stack course enrollment marketplace",
       fullDesc: "Built a full-stack course enrollment marketplace with a React frontend, Flask REST API, and MySQL database hosted on Railway and deployed on Render. The core of the project is a 13-step atomic database transaction that transfers enrollment, settles both parties' account balances, invalidates competing bids, and appends an immutable price history record or rolls everything back on failure. Implemented JWT auth, bcrypt password hashing, parameterized queries, and buyer/seller anonymity enforced at the query layer.",
