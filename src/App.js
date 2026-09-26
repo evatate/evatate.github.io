@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import VaultGate from './VaultGate';
 
 // Simple icon components to replace lucide-react
 const Github = ({ size = 24 }) => (
@@ -36,10 +37,6 @@ const ArrowUpRight = ({ size = 24 }) => (
 );
 
 export default function App() {
-  const [cubeRotation, setCubeRotation] = useState({ x: 20, y: 20 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const velocityRef = useRef({ x: 0, y: 0 });
   const [selectedProject, setSelectedProject] = useState(null);
   const [visibleSections, setVisibleSections] = useState(new Set());
   const [timelineProgress, setTimelineProgress] = useState(0);
@@ -77,80 +74,6 @@ export default function App() {
     };
   }, []);
 
-  // Cube physics with requestAnimationFrame for smooth performance
-  useEffect(() => {
-    let animationFrameId;
-    
-    const animate = () => {
-      if (!isDragging && (Math.abs(velocityRef.current.x) > 0.01 || Math.abs(velocityRef.current.y) > 0.01)) {
-        setCubeRotation(prev => ({
-          x: prev.x + velocityRef.current.x,
-          y: prev.y + velocityRef.current.y
-        }));
-        
-        velocityRef.current = {
-          x: velocityRef.current.x * 0.96,
-          y: velocityRef.current.y * 0.96
-        };
-        
-        animationFrameId = requestAnimationFrame(animate);
-      }
-    };
-    
-    if (!isDragging) {
-      animationFrameId = requestAnimationFrame(animate);
-    }
-    
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, [isDragging]);
-
-  const handleDragStart = (clientX, clientY) => {
-    setIsDragging(true);
-    setDragStart({ x: clientX, y: clientY });
-  };
-
-  const handleDragMove = (clientX, clientY) => {
-    if (isDragging) {
-      const deltaX = clientX - dragStart.x;
-      const deltaY = clientY - dragStart.y;
-      setCubeRotation(prev => ({
-        x: prev.x - deltaY * 0.5,
-        y: prev.y - deltaX * 0.5
-      }));
-      velocityRef.current = {
-        x: -deltaY * 0.3,
-        y: -deltaX * 0.3
-      };
-      setDragStart({ x: clientX, y: clientY });
-    }
-  };
-
-  const handleDragEnd = () => {
-    setIsDragging(false);
-  };
-
-  // Mouse handlers
-  const handleCubeMouseDown = (e) => handleDragStart(e.clientX, e.clientY);
-  const handleCubeMouseMove = (e) => handleDragMove(e.clientX, e.clientY);
-  const handleCubeMouseUp = () => handleDragEnd();
-
-  // Touch handlers
-  const handleCubeTouchStart = (e) => {
-    if (e.touches.length === 1) {
-      handleDragStart(e.touches[0].clientX, e.touches[0].clientY);
-    }
-  };
-  const handleCubeTouchMove = (e) => {
-    if (e.touches.length === 1) {
-      handleDragMove(e.touches[0].clientX, e.touches[0].clientY);
-    }
-  };
-  const handleCubeTouchEnd = () => handleDragEnd();
-  
   const projects = [
     {
       title: "ClawTrap",
@@ -202,6 +125,7 @@ export default function App() {
       github: "https://github.com/evatate/SiFT-Security",
       image: "/Images/sift.jpg.webp"
     },
+    /*
     {
       title: "Weather App",
       shortDesc: "Android weather application",
@@ -210,6 +134,7 @@ export default function App() {
       github: "https://github.com/evatate/Weather-Information-App",
       image: "/Images/weather.jpg"
     },
+    */
     {
       title: "Tiny Search Engine",
       shortDesc: "Custom search engine in C",
@@ -244,19 +169,15 @@ export default function App() {
   ];
 
   const skills = {
-    "Languages": ["Python", "Java", "C/C++", "Kotlin", "SQL", "R", "Bash"],
-    "ML/AI": ["PyTorch", "TensorFlow", "Scikit-learn", "HuggingFace", "NLP"],
-    "Tools": ["AWS", "Git", "Flutter", "Pandas", "NumPy", "Jupyter"],
-    "Mobile": ["Android", "iOS", "React Native", "Flutter"]
+    "Languages": ["Python", "Java", "C/C++", "Kotlin", "SQL", "R", "Bash", "Dart"],
+    "ML/AI": ["PyTorch", "TensorFlow", "Scikit-learn", "HuggingFace", "NLP", "LangChain", "MCP", "OpenClaw", "Claude Code"],
+    "Network Engineering": ["AWS", "Terraform", "Next-Gen Firewalls", "VPN", "Active Directory", "Okta", "BGP", "NAT"],
+    "Tools": ["Git", "Docker", "Pandas", "NumPy", "Jupyter"]
   };
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden"
-         onMouseMove={handleCubeMouseMove}
-         onMouseUp={handleCubeMouseUp}
-         onTouchMove={handleCubeTouchMove}
-         onTouchEnd={handleCubeTouchEnd}>
-      
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+
       {/* Top Bar */}
       <div className="fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-4 flex justify-between items-center bg-black/50 backdrop-blur-md border-b border-white/10">
         <div className="text-lg md:text-xl font-bold">Eva Tate</div>
@@ -264,111 +185,12 @@ export default function App() {
           <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">About</button>
           {/* <button onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Experience</button> */}
           <button onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Projects</button>
+          <button onClick={() => document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Skills</button>
           <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Contact</button>
         </div>
       </div>
 
-      {/* Hero with 3D Cube */}
-      <section className="min-h-screen flex items-center justify-center px-6 relative pt-20">
-        <div className="absolute inset-0 overflow-hidden opacity-5">
-          {[...Array(30)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute bg-white rounded-full"
-              style={{
-                width: Math.random() * 3 + 1 + 'px',
-                height: Math.random() * 3 + 1 + 'px',
-                left: Math.random() * 100 + '%',
-                top: Math.random() * 100 + '%',
-                animation: `float ${Math.random() * 10 + 10}s ease-in-out infinite`,
-                animationDelay: Math.random() * 5 + 's'
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="max-w-7xl w-full mx-auto flex flex-col md:flex-row items-center justify-center gap-12 md:gap-16">
-          {/* Left side - Text */}
-          <div className="text-center md:text-left animate-fade-in order-2 md:order-1">
-            <p className="text-sm font-light text-gray-300 tracking-widest">A COLLECTION OF</p>
-            <p className="text-3xl font-bold text-white mt-2">Projects</p>
-          </div>
-
-          {/* Center - Cube */}
-          <div className="flex flex-col items-center order-1 md:order-2">
-            <div className="mb-6 text-center animate-fade-in">
-              <p className="text-gray-400 text-sm tracking-widest mb-2">DRAG TO ROTATE</p>
-            </div>
-
-            {/* Interactive 3D Cube */}
-            <div className="perspective-1000 cursor-grab active:cursor-grabbing select-none"
-                 onMouseDown={handleCubeMouseDown}
-                 onTouchStart={handleCubeTouchStart}
-                 style={{ touchAction: 'none' }}>
-              <div 
-                className="w-64 h-64 relative preserve-3d will-change-transform"
-                style={{
-                  transform: `rotateX(${cubeRotation.x}deg) rotateY(${cubeRotation.y}deg)`,
-                  transformStyle: 'preserve-3d'
-                }}>
-                {/* Front */}
-                <div className="absolute w-64 h-64 bg-black border-2 border-white flex items-center justify-center"
-                     style={{ transform: 'translateZ(132px)' }}>
-                  <p className="text-6xl font-light text-white">Hi!</p>
-                </div>
-                {/* Back */}
-                <div className="absolute w-64 h-64 bg-black border-2 border-white flex items-center justify-center"
-                     style={{ transform: 'translateZ(-132px) rotateY(180deg)' }}>
-                  <div className="text-center">
-                    <p className="text-2xl font-semibold text-white">I'm</p>
-                    <p className="text-2xl font-light text-white">Eva</p>
-                  </div>
-                </div>
-                {/* Right */}
-                <div className="absolute w-64 h-64 bg-black border-2 border-white flex items-center justify-center"
-                     style={{ transform: 'rotateY(90deg) translateZ(132px)' }}>
-                  <div className="text-center px-4">
-                    <p className="text-xl font-semibold text-white">Computer</p>
-                    <p className="text-xl font-semibold text-white">Science</p>
-                  </div>
-                </div>
-                {/* Left */}
-                <div className="absolute w-64 h-64 bg-black border-2 border-white flex items-center justify-center"
-                     style={{ transform: 'rotateY(-90deg) translateZ(132px)' }}>
-                  <div className="text-center">
-                    <p className="text-xl font-semibold text-white">Dartmouth</p>
-                    <p className="text-lg font-light text-gray-200 mt-1">'27</p>
-                  </div>
-                </div>
-                {/* Top */}
-                <div className="absolute w-64 h-64 bg-black border-2 border-white flex items-center justify-center"
-                     style={{ transform: 'rotateX(90deg) translateZ(132px)' }}>
-                  <p className="text-lg font-semibold text-white tracking-wide">Machine Learning</p>
-                </div>
-                {/* Bottom */}
-                <div className="absolute w-64 h-64 bg-black border-2 border-white flex items-center justify-center"
-                     style={{ transform: 'rotateX(-90deg) translateZ(132px)' }}>
-                  <p className="text-lg font-semibold text-white tracking-wide">Data Analytics</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right side text */}
-          <div className="text-center md:text-right animate-fade-in-delay order-3">
-            <p className="text-sm font-light text-white tracking-widest">Eva Tate<br/>Dartmouth College '27</p>
-          </div>
-        </div>
-
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <p className="text-xs font-light text-gray-400 tracking-widest uppercase">Scroll to explore</p>
-          <div className="animate-bounce">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/60 hover:text-white/90 transition-colors">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </div>
-        </div>
-      </section>
+      <VaultGate />
 
       {/* About Section */}
       <section id="about" className="py-24 px-6 md:px-12 lg:px-24" data-section="about">
@@ -403,7 +225,7 @@ export default function App() {
                 <h3 className="text-lg md:text-xl font-semibold text-white">Dartmouth College <span className="text-gray-500">|</span> Computer Science</h3>
               </div>
               <p className="text-sm text-gray-300 leading-relaxed font-light tracking-wide\">
-                Hi! I'm Eva, a junior at Dartmouth College. I'm passionate about applying machine learning and data science to real-world problems, from building predictive models to deploying multimodal ML systems. My projects range from early Alzheimer's detection to predicting customer behavior to brain-to-text decoding for ALS patients. Outside of coding, you can find me running with the Dartmouth Running Team, backpacking with the Outing Club, or making rings in the Jewelry Studio.
+                Hi! I'm Eva, a senior at Dartmouth College majoring in CS. I'm passionate about building and securing machine learning systems from multimodal clinical ML deployed in trials to the AI agents that are starting to run inside enterprise infrastructure. Last summer I interned as a Systems Engineer at Palo Alto Networks, configuring next-gen firewalls and cloud network infrastructure and demoing enterprise AI security products to executive leadership. My personal projects span early Alzheimer's detection, predicting customer behavior, brain-to-text decoding for ALS patients, and an AI-agent honeypot I built to study how autonomous systems fail under attack. Outside of coding, you can find me running with the Dartmouth Running Team, backpacking with the Outing Club, or making rings in the Jewelry Studio.
               </p>
             </div>
           </div>
@@ -568,7 +390,7 @@ export default function App() {
       )}
 
       {/* Skills Section */}
-      <section className="py-24 px-6 md:px-12 lg:px-24" data-section="skills">
+      <section id="skills" className="py-24 px-6 md:px-12 lg:px-24" data-section="skills">
         <div className="max-w-6xl mx-auto">
           <div className={`transition-all duration-1000 ${visibleSections.has('skills') ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-12">Skills</h2>
@@ -606,10 +428,10 @@ export default function App() {
               I'd love to connect. Feel free to reach out by email, or find me on <span className="text-white">LinkedIn</span> and <span className="text-white">GitHub</span>.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <a href="mailto:eva.n.tate.27@dartmouth.edu" 
+              <a href="mailto:etate20056@gmail.com"
                  className="group flex items-center justify-center gap-2 px-6 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-all">
                 <Mail size={20} />
-                eva.n.tate.27@dartmouth.edu
+                etate20056@gmail.com
               </a>
               <a href="https://www.linkedin.com/in/eva-tate-5b10292ab/" 
                  target="_blank"
@@ -637,36 +459,13 @@ export default function App() {
         <p>Built with React</p>
       </footer>
 
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translate(0, 0); }
-          25% { transform: translate(10px, -10px); }
-          50% { transform: translate(-10px, 10px); }
-          75% { transform: translate(10px, 10px); }
-        }
-        @keyframes scroll {
-          0% { transform: translateY(0); opacity: 1; }
-          100% { transform: translateY(16px); opacity: 0; }
-        }
+      <style>{`
         @keyframes fade-in {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in {
           animation: fade-in 0.8s ease-out;
-        }
-        .animate-fade-in-delay {
-          animation: fade-in 0.8s ease-out 0.3s forwards;
-          opacity: 0;
-        }
-        .animate-scroll {
-          animation: scroll 2s ease-in-out infinite;
-        }
-        .perspective-1000 {
-          perspective: 1000px;
-        }
-        .preserve-3d {
-          transform-style: preserve-3d;
         }
       `}</style>
     </div>
