@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import VaultGate from './VaultGate';
+import RecordPlayer from './RecordPlayer';
 
 // Simple icon components to replace lucide-react
 const Github = ({ size = 24 }) => (
@@ -175,6 +176,15 @@ export default function App() {
     "Tools": ["Git", "Docker", "Pandas", "NumPy", "Jupyter"]
   };
 
+  const certifications = [
+    { name: "CompTIA Network+ ce Certification", image: "https://images.credly.com/images/c70ba73e-3c8a-46fa-9d60-4a9af94ad662/linkedin_thumb_blob", url: "https://www.credly.com/badges/6a02a899-5c57-44fc-b594-0933a932f5a3/public_url" },
+    { name: "CompTIA Security+ ce Certification", image: "https://images.credly.com/images/80d8a06a-c384-42bf-ad36-db81bce5adce/linkedin_thumb_blob", url: "https://www.credly.com/badges/8fb534b5-e6e6-47c5-9f98-2df118068354/public_url" },
+    { name: "Palo Alto Networks Certified Cybersecurity Apprentice", image: "https://images.credly.com/images/4c16446e-9b30-46b0-b739-6a58b7980b78/linkedin_thumb_blob", url: "https://www.credly.com/badges/0da44875-6fa5-43a2-9d31-4978ac1b316c/public_url" },
+    { name: "Palo Alto Networks Certified Cybersecurity Practitioner", image: "https://images.credly.com/images/57590a7a-6383-4649-92ed-4a41659dcd23/linkedin_thumb_blob", url: "https://www.credly.com/badges/4a04664b-a01b-4f46-b276-e02b75486bde/public_url" },
+    { name: "Palo Alto Networks Certified Security Operations Professional", image: "https://images.credly.com/images/5faac3ed-6bbd-43d8-8712-667e13c38740/linkedin_thumb_blob", url: "https://www.credly.com/badges/9f9244db-f0ae-4c08-beae-392c155be306/public_url" },
+    { name: "Palo Alto Networks Certified Cloud Security Professional", image: "https://images.credly.com/images/914f9fa7-58f3-447e-9a53-d31805e7523e/linkedin_thumb_blob", url: "https://www.credly.com/badges/0e8b3fd8-aa4b-4fa3-895a-0735d29510fa/public_url" }
+  ];
+
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
 
@@ -186,6 +196,7 @@ export default function App() {
           {/* <button onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Experience</button> */}
           <button onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Projects</button>
           <button onClick={() => document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Skills</button>
+          <button onClick={() => document.getElementById('certifications')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Certifications</button>
           <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-gray-400 transition-colors">Contact</button>
         </div>
       </div>
@@ -214,13 +225,16 @@ export default function App() {
             </div>
             
             {/* Right - Text */}
-            <div style={{
+            <div className="relative" style={{
               transitionDelay: visibleSections.has('about') ? '0.4s' : '0s',
               opacity: visibleSections.has('about') ? 1 : 0,
               transform: visibleSections.has('about') ? 'translateX(0)' : 'translateX(40px)',
               transition: 'all 0.8s ease-out'
             }}>
-              <div className="mb-6">
+              <div className="relative mb-6 pr-16">
+                <div className="absolute right-6 bottom-0">
+                  <RecordPlayer />
+                </div>
                 <p className="text-xs font-light text-gray-400 tracking-widest uppercase mb-3">About Me</p>
                 <h3 className="text-lg md:text-xl font-semibold text-white">Dartmouth College <span className="text-gray-500">|</span> Computer Science</h3>
               </div>
@@ -413,6 +427,38 @@ export default function App() {
                     ))}
                   </div>
                 </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Certifications Section */}
+      <section id="certifications" className="py-10 px-4 md:px-6 lg:px-8" data-section="certifications">
+        <div className="max-w-7xl mx-auto">
+          <div className={`transition-all duration-1000 ${visibleSections.has('certifications') ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-12">Certifications</h2>
+            <div className="grid grid-cols-6 gap-0.5">
+              {certifications.map((cert, idx) => (
+                <a
+                  key={idx}
+                  href={cert.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={cert.name}
+                  className="group"
+                  style={{
+                    transitionDelay: `${idx * 0.06}s`,
+                    opacity: visibleSections.has('certifications') ? 1 : 0,
+                    transform: visibleSections.has('certifications') ? 'translateY(0)' : 'translateY(20px)',
+                    transition: 'all 0.6s ease-out'
+                  }}>
+                  <img
+                    src={cert.image}
+                    alt={cert.name}
+                    className="w-full h-auto object-contain group-hover:scale-110 transition-transform duration-300"
+                  />
+                </a>
               ))}
             </div>
           </div>

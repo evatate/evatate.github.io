@@ -53,8 +53,8 @@ export default function VaultGate() {
 
     svg.appendChild(el('circle', { cx, cy, r: 142, fill: 'none', stroke: 'url(#bezelGrad)', 'stroke-width': 26 }));
 
-    for (let b = 0; b < 8; b++) {
-      const ba = (b * 45) * Math.PI / 180;
+    for (let b = 0; b < 6; b++) {
+      const ba = (b * 60 - 90) * Math.PI / 180;
       const bx = cx + 142 * Math.cos(ba), by = cy + 142 * Math.sin(ba);
       svg.appendChild(el('circle', { cx: bx, cy: by, r: 6.5, fill: 'url(#boltGrad)', stroke: 'rgba(0,0,0,0.5)', 'stroke-width': 0.75 }));
       const slotA = ba + Math.PI / 5;
@@ -302,7 +302,7 @@ export default function VaultGate() {
         bump();
       }
 
-      const gateIdx = (((Math.floor((-rotation - SPOKE_PHASE) / 60)) % 6) + 6) % 6;
+      const gateIdx = (((Math.floor(-rotation / 60)) % 6) + 6) % 6;
       if (gateIdx !== lastGate) {
         lastGate = gateIdx;
         factEl.textContent = facts[gateIdx];
